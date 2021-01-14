@@ -3,6 +3,7 @@
 import argparse
 import configparser
 import praw
+import pprint
 
 class redditUpvoteDownloader:
     def __init__(self, sub):
@@ -14,7 +15,18 @@ class redditUpvoteDownloader:
                             user_agent="reddit Upvote Downloader",
                             username=config['REDDIT']['username'],
                             password=config['REDDIT']['password'])
-        print(self.reddit.user.me())
+        self.user = self.reddit.user.me()
+        self.upvoted = self.user.upvoted(limit=1)
+
+        #pprint.pprint(vars(self.upvoted))
+        for u in self.upvoted:
+            if u.subreddit == 'battlestations':
+                print(f'{u.url} - {u.title}')
+            #pprint.pprint(vars(u))
+
+            #print(u.url + ' - ' + u.title)
+
+
 
 def main():
     parser = argparse.ArgumentParser(description="Reddit Upvote Downloader by Emanuel Ramirez")
