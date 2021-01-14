@@ -29,7 +29,7 @@ class redditUpvoteDownloader:
     def file_exists(self, filename):
         """Checks if file already exists or no"""
         if os.path.isfile(filename):
-            print(filename)
+            print(f'Already Exists: {filename}')
             return True
         return False
 
@@ -54,7 +54,7 @@ class redditUpvoteDownloader:
             if item.subreddit == self.sub:
                 filename = self.path + re.search('(?s:.*)\w/(.*)', item.url).group(1)
                 self.download(filename, item.url)
-                print(f'Filename: {filename}')
+                #print(f'Filename: {filename}')
 
 def main():
     parser = argparse.ArgumentParser(description="Reddit Upvote Downloader by Emanuel Ramirez")
