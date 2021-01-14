@@ -69,9 +69,11 @@ class redditUpvoteDownloader:
                 #print(f'Filename: {filename}')
 
 def main():
+    #TODO: add the option of downloading 'saved' videos
     parser = argparse.ArgumentParser(description="Reddit Upvote Downloader by Emanuel Ramirez")
     req_args = parser.add_argument_group('Required Arguments')
     req_args = parser.add_argument('-s', type=str, help="subreddit", required=True)
+    req_args = parser.add_argument('-t', type=str, help="Upvoted or Saved posts?", required=True)
     args = parser.parse_args()
     downloader = redditUpvoteDownloader(args.s)
     downloader.run()
