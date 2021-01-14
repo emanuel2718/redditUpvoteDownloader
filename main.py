@@ -48,6 +48,7 @@ class redditUpvoteDownloader:
         print(f'New file added: {filename}')
 
     def run(self):
+        #TODO: add error handling
         images = []
         for item in self.upvoted:
             if item.subreddit == self.sub:
