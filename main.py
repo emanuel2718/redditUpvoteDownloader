@@ -23,6 +23,7 @@ class redditUpvoteDownloader:
         self.upvoted = self.user.upvoted(limit=500)
 
     def file_exists(self, filename):
+        """Checks if file already exists or no"""
         if os.path.isfile(filename):
             print(filename)
             return True
