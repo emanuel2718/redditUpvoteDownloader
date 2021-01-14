@@ -1,4 +1,8 @@
-""" Created by Emanuel Rmairez Alsina"""
+"""
+Author: Emanuel Ramirez Alsina
+Program: redditUpvoteDownloader
+Description: Downloads user upvoted images from specific subreddits
+"""
 
 import argparse
 import configparser
@@ -30,6 +34,7 @@ class redditUpvoteDownloader:
         return False
 
     def download(self, filename, url):
+        #TODO: only download .jpg or .png
         if self.file_exists(filename):
             return
 
