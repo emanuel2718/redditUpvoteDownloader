@@ -60,6 +60,7 @@ class redditUpvoteDownloader:
         print(f'New file added: {filename}')
 
     def run(self):
+        #TODO: add file donwload counter at the end
         #TODO: add error handling
         #images = []
         for item in self.upvoted:
