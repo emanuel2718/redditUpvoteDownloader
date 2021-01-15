@@ -9,6 +9,8 @@ Unfortunately, reddit gives a hard limit of 1024 votes to scan. Keep that in min
 
 # Installation:
 
+*Give instructions on how to handle the reddit/prefs/apps*
+
 Clone this repo:
 ```sh
 git clone https://github.com/emanuel2718/redditUpvoteDownloader.git
@@ -30,11 +32,12 @@ python3 main.py -s mechanicalkeyboards
 # TODO:
 
 - [x] make an option to pass the limit as an argument with -l flag
-- [ ] make flag -all to download all the upvoted posts no matter the subreddit
+- [x] add the option to save the file with the format: username_posttitle.extension
+- [x] make flag -all to download all the upvoted posts no matter the subreddit
 - [ ] refactor item post name to something more relevant
-- [ ] add the option to save the file with the format: username_posttitle.extension
 - [ ] add better error handling
 - [ ] add the option of downloading 'saved' videos
 - [ ] make instructions to change config.ini.example -> config.in
 - [ ] make table for arguments explanations in the README file
+- [ ] add test suite
 

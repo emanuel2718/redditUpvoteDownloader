@@ -28,10 +28,9 @@ class redditUpvoteDownloader:
         self.debug = debug
         self.by_user = user
         self.sub = sub
+        self.path = None
         self.limit = limit
         self.download_counter = 0
-        self.path = f'{HOME_PATH}/{self.sub}/'
-        #self.path = f'Pictures/{self.sub}/' # will make a foler Pictures/ inside this git repository
         self.reddit = praw.Reddit(client_id=config['REDDIT']['client_id'],
                             client_secret=config['REDDIT']['client_secret'],
                             user_agent="Reddit Upvote Downloader",
@@ -39,6 +38,12 @@ class redditUpvoteDownloader:
                             password=config['REDDIT']['password'])
         self.user = self.reddit.user.me()
         self.upvoted = self.user.upvoted(limit=None)
+
+        if self.sub is not None:
+            self.path = f'{HOME_PATH}/{self.sub}/'
+            #self.path = f'Pictures/{self.sub}/' # will make a foler Pictures/ inside this git repository
+        else:
+            self.path = f'{HOME_PATH}/{self.user}/'
 
     def file_exists(self, filename, item):
         #TODO: change this docstring. Signature changed.
@@ -59,7 +64,7 @@ class redditUpvoteDownloader:
                 os.rename(filename_without_username, filename_with_username)
                 return True
             else:
-                print(f'Already Exists: {filename}')
+                #print(f'Already Exists: {filename}')
                 return True
         elif os.path.isfile(filename_with_username):
             if not self.by_user:
@@ -88,6 +93,10 @@ class redditUpvoteDownloader:
             a valid image with a valid extension (some posts don't link to an image,
             instead they link to a website that holds the image)
         """
+        # -s subreddit flag given but the current subreddit doest not match
+        if self.sub is not None and item.subreddit != self.sub:
+            return
+
         if self.file_exists(filename, item):
             return
 
@@ -124,12 +133,11 @@ class redditUpvoteDownloader:
         for item in self.upvoted:
             #pprint.pprint(vars(item))
             self.amount_of_upvotes_scanned += 1
-            if item.subreddit == self.sub:
-                if self.check_download_limit():
-                    filename = self.get_filename(item)
-                    self.download(filename, item)
-                else:
-                    break
+            if self.check_download_limit():
+                filename = self.get_filename(item)
+                self.download(filename, item)
+            else:
+                break
         print(f'\nDone: {self.download_counter} new images downloaded to {self.path}')
 
         if self.debug:
@@ -140,7 +148,7 @@ def main():
     parser = argparse.ArgumentParser(description="Reddit Upvote Downloader by Emanuel Ramirez")
     parser.add_argument_group('Required Arguments')
     parser.add_argument('-debug', '--debug', action='store_true', help="Debug flag", required=False)
-    parser.add_argument('-s', type=str, help="subreddit", required=True)
+    parser.add_argument('-s', type=str, help="subreddit", required=False)
     parser.add_argument('-t', type=str, help="Upvoted or Savedposts?", required=False)
     parser.add_argument('-l', type=int, help="Limit of post to download (default: None)", required=False)
     parser.add_argument('-all', action='store_true', help="Download every user upvoted posts", required=False)
