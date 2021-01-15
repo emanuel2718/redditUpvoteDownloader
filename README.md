@@ -5,6 +5,7 @@ Reddit Upvote Downloader
 </h1>
 
 *insert some project description here*
+Unfortunately, reddit gives a hard limit of 1024 votes to scan. Keep that in mind.
 
 # Installation:
 
@@ -28,7 +29,7 @@ python3 main.py -s mechanicalkeyboards
 
 # TODO:
 
-- [ ] make an option to pass the limit as an argument with -l flag
+- [x] make an option to pass the limit as an argument with -l flag
 - [ ] add the option to save the file with the format: username_posttitle.extension
 - [ ] add better error handling
 - [ ] add the option of downloading 'saved' videos
