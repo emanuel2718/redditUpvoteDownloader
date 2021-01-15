@@ -115,6 +115,7 @@ def main():
     parser.add_argument('-s', type=str, help="subreddit", required=True)
     parser.add_argument('-t', type=str, help="Upvoted or Savedposts?", required=False)
     parser.add_argument('-l', type=int, help="Limit of post to download (default: None)", required=False)
+    parser.add_argument('-all', action='store_true', help="Download every user upvoted posts", required=False)
     args = parser.parse_args()
     downloader = redditUpvoteDownloader(args.s, args.l, args.debug)
     downloader.run()
