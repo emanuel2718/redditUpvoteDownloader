@@ -76,7 +76,6 @@ class redditUpvoteDownloader:
             f.write(r.content)
         print(f'New file added: {filename}')
 
-    #TODO: add error handling
     def run(self):
         """ Iterate through all the user upvoted posts (withting the @LIMIT) and call for download
             if the subreddit matches the given subreddit by the user through the -s argument.
@@ -88,7 +87,6 @@ class redditUpvoteDownloader:
                 self.download(filename, item.url)
 
 def main():
-    #TODO: add the option of downloading 'saved' videos
     parser = argparse.ArgumentParser(description="Reddit Upvote Downloader by Emanuel Ramirez")
     req_args = parser.add_argument_group('Required Arguments')
     req_args = parser.add_argument('-s', type=str, help="subreddit", required=True)
