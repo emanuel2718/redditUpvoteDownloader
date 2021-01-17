@@ -34,6 +34,7 @@ python3 main.py -s mechanicalkeyboards
 - [x] make an option to pass the limit as an argument with -l flag
 - [x] add the option to save the file with the format: username_posttitle.extension
 - [x] make flag -all to download all the upvoted posts no matter the subreddit
+- [ ] add tuple list of supported formats (.png, .jpg. .gif). Maybe flag about more extension?
 - [ ] refactor item post name to something more relevant
 - [ ] add better error handling
 - [ ] add the option of downloading 'saved' videos
