@@ -9,6 +9,13 @@ for ideas on my own build. Saw someone on reddit asking for a simple service lik
 
 *All downlaoded images credit goes to reddit and/or the uploader*
 
+
+
+# Index
+
+* [Installation](#installation)
+* [How to use](#how-to-use)
+
 # Installation:
 
 
@@ -23,27 +30,39 @@ cd redditUpvoteDownloader
 pip install -r requirements.txt
 ```
 
+&nbsp; 
+
 #### 3. [Create a developer application on reddit](https://www.reddit.com/prefs/apps)
+
+&nbsp; 
 
 #### 4. Click on Are you a developer? create an app
 
 ![PrefsPanel01](https://user-images.githubusercontent.com/55965894/108690386-27288d80-74af-11eb-81a9-a0854ca7304d.png)
 
+&nbsp; 
+
 #### 5. Fill information and click create app
 
 ![AppName02](https://user-images.githubusercontent.com/55965894/108690978-d2394700-74af-11eb-9992-e81f8ba71bd4.png)
+
+&nbsp; 
 
 #### 6. Reddit developer account example data below (Client_id, Client_secret):
 
 ![info03](https://user-images.githubusercontent.com/55965894/108691188-10cf0180-74b0-11eb-84c7-c600ee2440ea.png)
 
+&nbsp; 
 
 #### 7. In `~/<path to this project>/redditupvotedownloader` change the name of `config.ini.example` to `config.ini`
+
+&nbsp; 
 
 #### 8. In `config.ini` change the placeholder vaules.
 
 ![config04](https://user-images.githubusercontent.com/55965894/108691226-1fb5b400-74b0-11eb-8ad8-79264181842b.png)
 
+&nbsp; 
 
 # How to use:
 
@@ -51,21 +70,25 @@ pip install -r requirements.txt
 ```sh
 python3 upvoteDownload.py -all
 ```
+&nbsp; 
 
 #### Download the last 50 upvoted images
 ```sh
 python3 upvoteDownload.py -all -l 50
 ```
+&nbsp; 
 
 #### Download all the upvoted images from r/Mechanicalkeyboards
 ```sh
 python3 upvoteDownload.py -s mechanicalkeyboards
 ```
+&nbsp; 
 
 #### Download all the upvoted images from r/Battlestations with uploader username in front of filename
 ```sh
 python3 upvoteDownload.py -user -s mechanicalkeyboards
 ```
+&nbsp; 
 
 # TODO:
 
