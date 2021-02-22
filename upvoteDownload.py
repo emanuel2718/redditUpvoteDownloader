@@ -64,7 +64,6 @@ class redditUpvoteDownloader:
                 os.rename(filename_without_username, filename_with_username)
                 return True
             else:
-                #print(f'Already Exists: {filename}')
                 return True
         elif os.path.isfile(filename_with_username):
             if not self.by_user:
