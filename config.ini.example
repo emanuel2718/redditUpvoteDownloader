@@ -1,7 +1,5 @@
 [REDDIT]
-client_id = '5H311RKMnWkqnw'
-client_secret = 'ut4_Xxi4ZcoGSvC6dzh4mUrGpXuqFQa'
-username = 'USER_NAME_HERE'
-password = 'PASSWORD_HERE'
-
-
+client_id = 5H311RKMnWkqnw
+client_secret = ut4_Xxi4ZcoGSvC6dzh4mUrGpXuqFQa
+username = USER_NAME_HERE
+password = PASSWORD_HERE

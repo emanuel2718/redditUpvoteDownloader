@@ -21,20 +21,20 @@ for ideas on my own build. Saw someone on reddit asking for a simple service lik
 
 #### 1. Clone this repo:
 ```sh
-git clone https://github.com/emanuel2718/redditUpvoteDownloader.git
-cd redditUpvoteDownloader
+$ git clone https://github.com/emanuel2718/redditUpvoteDownloader.git
+$ cd redditUpvoteDownloader
 ```
 
 #### 2. Intall requirements:
 ```sh
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 &nbsp; 
 
 #### 3. Change the name of `config.ini.example`
 ```sh
-mv config.ini.example config.ini
+$ mv config.ini.example config.ini
 ```
 
 &nbsp; 
@@ -63,33 +63,31 @@ mv config.ini.example config.ini
 
 #### 8. In `config.ini` change the placeholder vaules.
 
-![config04](https://user-images.githubusercontent.com/55965894/108691226-1fb5b400-74b0-11eb-8ad8-79264181842b.png)
-
 &nbsp; 
 
 # How to use:
 
 #### Download all the upvoted images without limit
 ```sh
-python3 upvoteDownload.py -all
+$ python3 upvoteDownload.py -all
 ```
 &nbsp; 
 
 #### Download the last 50 upvoted images
 ```sh
-python3 upvoteDownload.py -all -l 50
+$ python3 upvoteDownload.py -all -l 50
 ```
 &nbsp; 
 
 #### Download all the upvoted images from r/Mechanicalkeyboards
 ```sh
-python3 upvoteDownload.py -s mechanicalkeyboards
+$ python3 upvoteDownload.py -s mechanicalkeyboards
 ```
 &nbsp; 
 
 #### Download all the upvoted images from r/Battlestations with uploader username in front of filename
 ```sh
-python3 upvoteDownload.py -user -s mechanicalkeyboards
+$ python3 upvoteDownload.py -user -s mechanicalkeyboards
 ```
 &nbsp; 
 
@@ -100,7 +98,7 @@ python3 upvoteDownload.py -user -s mechanicalkeyboards
 - [x] make flag -all to download all the upvoted posts no matter the subreddit
 - [x] make table for arguments explanations in the README file
 - [x] make instructions to change config.ini.example -> config.in
-- [ ] add directory flag to specify download directory
+- [ ] add directory flag to specify download directory. If not -dir, then store in current dir
 - [ ] add tuple list of supported formats (.png, .jpg. .gif). Maybe flag about more extension?
 - [ ] add test suite
 - [ ] add better error handling
