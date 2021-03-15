@@ -98,6 +98,7 @@ $ python3 upvoteDownload.py -user -s mechanicalkeyboards
 - [x] make flag -all to download all the upvoted posts no matter the subreddit
 - [x] make table for arguments explanations in the README file
 - [x] make instructions to change config.ini.example -> config.in
+- [ ] Avoid deleting old photos if now the user has deleted the conten (i.e case None.png)
 - [ ] add directory flag to specify download directory. If not -dir, then store in current dir
 - [ ] add tuple list of supported formats (.png, .jpg. .gif). Maybe flag about more extension?
 - [ ] add test suite
