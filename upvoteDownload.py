@@ -76,13 +76,13 @@ class redditUpvoteDownloader:
         return False
 
     def is_file_an_image(self, filename):
-        """ Check if file is a valid image with a valid extension
-            Extensions currently supported: .png, .jpg, .jpeg
+        """ Check if file is a valid image or gif with a valid extension
+            Extensions currently supported: .png, .jpg, .jpeg, .gifv
 
         :param: string: file name
         :return: bool: is file an image or not
         """
-        if filename.endswith(('.jpg', '.png', 'jpeg')):
+        if filename.endswith(('.jpg', '.png', 'jpeg', '.gifv')):
             return True
         return False
 
@@ -101,6 +101,11 @@ class redditUpvoteDownloader:
 
         if not self.is_file_an_image(filename):
             return
+
+        # Convert gifs to mp4
+        if item.url.endswith('.gifv'):
+            item.url = item.url.replace('.gifv', '.mp4')
+            filename = filename.replace('.gifv', '.mp4')
 
         r = requests.get(item.url)
         if not os.path.exists(self.path):
