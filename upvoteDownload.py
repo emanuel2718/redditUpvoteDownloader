@@ -13,7 +13,7 @@ import praw
 import re
 import requests
 
-HOME_PATH = f'{Path.home()}/Pictures' # this will make the path ~/Pictures/
+#HOME_PATH = f'{Path.home()}/Pictures' # this will make the path ~/Pictures/
 #LIMIT = 500 # limit for the amount of upvoted posts to check
 
 class redditUpvoteDownloader:
@@ -40,10 +40,9 @@ class redditUpvoteDownloader:
         self.upvoted = self.user.upvoted(limit=None)
 
         if self.sub is not None:
-            self.path = f'{HOME_PATH}/{self.sub}/'
-            #self.path = f'Pictures/{self.sub}/' # will make a foler Pictures/ inside this git repository
+            self.path = os.path.join(os.getcwd() + os.sep, f'{self.sub}{os.sep}')
         else:
-            self.path = f'{HOME_PATH}/{self.user}/'
+            self.path = os.path.join(os.getcwd() + os.sep, f'{self.user}{os.sep}')
 
     def file_exists(self, filename, item):
         #TODO: change this docstring. Signature changed.
@@ -64,6 +63,7 @@ class redditUpvoteDownloader:
                 os.rename(filename_without_username, filename_with_username)
                 return True
             else:
+                print(f'Already Exists: {filename}')
                 return True
         elif os.path.isfile(filename_with_username):
             if not self.by_user:
