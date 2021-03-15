@@ -28,7 +28,6 @@ class redditUpvoteDownloader:
         self.debug = debug
         self.by_user = user
         self.sub = sub
-        self.path = None
         self.limit = limit
         self.download_counter = 0
         self.reddit = praw.Reddit(client_id=config['REDDIT']['client_id'],
@@ -39,10 +38,11 @@ class redditUpvoteDownloader:
         self.user = self.reddit.user.me()
         self.upvoted = self.user.upvoted(limit=None)
 
+        self.path = None
         if self.sub is not None:
-            self.path = os.path.join(os.getcwd() + os.sep, f'{self.sub}{os.sep}')
+            self.path = os.path.join(f'{os.getcwd()}{os.sep}media{os.sep}subreddit{os.sep}', f'{self.sub}{os.sep}')
         else:
-            self.path = os.path.join(os.getcwd() + os.sep, f'{self.user}{os.sep}')
+            self.path = os.path.join(f'{os.getcwd()}{os.sep}media{os.sep}user{os.sep}', f'{self.user}{os.sep}')
 
     def file_exists(self, filename, item):
         #TODO: change this docstring. Signature changed.
@@ -93,7 +93,12 @@ class redditUpvoteDownloader:
             instead they link to a website that holds the image)
         """
         # -s subreddit flag given but the current subreddit doest not match
+
         if self.sub is not None and item.subreddit != self.sub:
+            return
+
+        # This is a deleted user account. Don't donwload empty content
+        if item.author is None:
             return
 
         if self.file_exists(filename, item):
@@ -153,7 +158,6 @@ def main():
     parser.add_argument_group('Required Arguments')
     parser.add_argument('-debug', '--debug', action='store_true', help="Debug flag", required=False)
     parser.add_argument('-s', type=str, help="subreddit", required=False)
-    parser.add_argument('-t', type=str, help="Upvoted or Savedposts?", required=False)
     parser.add_argument('-l', type=int, help="Limit of post to download (default: None)", required=False)
     parser.add_argument('-all', action='store_true', help="Download every user upvoted posts", required=False)
     parser.add_argument('-user', action='store_true', help="Save with post author name in front of file name", required=False)
