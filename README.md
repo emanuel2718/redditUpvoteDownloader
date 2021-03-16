@@ -4,7 +4,7 @@
 Reddit Upvote Downloader
 </h1>
 
-This project was originally made for my own use only. The intent was to automate the downloading of all my r/Battlestations upvoted images for ideas on my own build. But saw someone on reddit asking for a service like this so I decided to make it public.
+This project was originally made for my own use only. The intent was to automate the download of all my r/Battlestations upvoted images for ideas on my own build. But saw someone on reddit asking for a service like this so I decided to make it public.
 
 
 *All downlaoded images credit goes to reddit and/or the uploader*
