@@ -16,6 +16,7 @@ import requests
 # HOME_PATH = f'{Path.home()}/Pictures' # this will make the path ~/Pictures/
 # LIMIT = 500 # limit for the amount of upvoted posts to check
 
+#REPEATED_POSTS = 0
 
 class redditUpvoteDownloader:
     def __init__(self, sub, limit, user=False, debug=False):
@@ -31,6 +32,8 @@ class redditUpvoteDownloader:
         self.sub = sub
         self.limit = limit
         self.download_counter = 0
+        self.repeated_posts = 0
+
         self.reddit = praw.Reddit(
             client_id=config['REDDIT']['client_id'],
             client_secret=config['REDDIT']['client_secret'],
@@ -66,18 +69,22 @@ class redditUpvoteDownloader:
         # TODO: Refactor me!
         if os.path.isfile(filename_without_username):
             if self.by_user:
+                self.repeated_posts = 0
                 print(f'Adding {item.author} (username) to {image_name} file.')
                 os.rename(filename_without_username, filename_with_username)
                 return True
             else:
+                self.repeated_posts += 1
                 print(f'Already Exists: {filename}')
                 return True
         elif os.path.isfile(filename_with_username):
             if not self.by_user:
+                self.repeated_posts = 0
                 print(f'Removing username from {filename} file.')
                 os.rename(filename_with_username, filename_without_username)
                 return True
             else:
+                self.repeated_posts += 1
                 print(f'Already Exists: {filename}')
                 return True
         return False
@@ -150,6 +157,9 @@ class redditUpvoteDownloader:
         """
         for item in self.upvoted:
             # pprint.pprint(vars(item))
+            if self.repeated_posts > 20:
+                print('Previously saved posts reached. Too many repeated post seen.')
+                break
             self.amount_of_upvotes_scanned += 1
             if self.check_download_limit():
                 filename = self.get_filename(item)
