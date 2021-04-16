@@ -41,15 +41,46 @@ class redditUpvoteDownloader:
         self.user = self.reddit.user.me()
         self.upvoted = self.user.upvoted(limit=None)
 
-        self.path = None
-        if self.args.subreddit is not None:
-            self.path = os.path.join(
-                f'{os.getcwd()}{os.sep}media{os.sep}subreddit{os.sep}',
-                f'{self.args.subreddit}{os.sep}')
+        self.path = self.args['path']
+        self.path = self.set_path()
+
+    def set_path(self):
+        if self.args['subreddit']:
+            if self.args['path'] is not None and self.is_valid_path():
+                self.path += os.path.join(
+                    f'reddit{os.sep}subreddit{os.sep}',
+                    f'{self.args["subreddit"]}{os.sep}')
+            else:
+                self.path = os.path.join(
+                    f'{os.getcwd()}{os.sep}media{os.sep}subreddit{os.sep}',
+                    f'{self.args["subreddit"]}{os.sep}')
         else:
-            self.path = os.path.join(
-                f'{os.getcwd()}{os.sep}media{os.sep}user{os.sep}',
-                f'{self.user}{os.sep}')
+            if self.args['path'] is not None and self.is_valid_path():
+                self.path += os.path.join(
+                    f'reddit{os.sep}user{os.sep}{self.user}{os.sep}')
+            else:
+                self.path = os.path.join(
+                    f'{os.getcwd()}{os.sep}media{os.sep}user{os.sep}',
+                    f'{self.user}{os.sep}')
+
+        return self.path
+
+    def is_valid_path(self):
+        given_path = self.args['path']
+        if os.path.exists(given_path):
+            if not given_path.endswith(f'{os.sep}'):
+                self.path += os.sep
+            return True
+        else:
+            split_path = given_path.rpartition(os.sep)
+            new_dir = f'{split_path[1]}{split_path[2]}'
+            if os.path.exists(split_path[0]):
+                print(f'Creating directory {new_dir} on {split_path[0]}')
+                os.path.join(split_path[0], new_dir)
+                self.path += os.sep
+                return True
+
+        return False
 
     def file_exists(self, filename, item):
         # TODO: change this docstring. Signature changed.
@@ -66,7 +97,7 @@ class redditUpvoteDownloader:
 
         # TODO: Refactor me!
         if os.path.isfile(filename_without_username):
-            if self.args.user:
+            if self.args['user']:
                 self.repeated_posts = 0
                 print(f'Adding {item.author} (username) to {image_name} file.')
                 os.rename(filename_without_username, filename_with_username)
@@ -76,7 +107,7 @@ class redditUpvoteDownloader:
                 print(f'Already Exists: {filename}')
                 return True
         elif os.path.isfile(filename_with_username):
-            if not self.args.user:
+            if not self.args['user']:
                 self.repeated_posts = 0
                 print(f'Removing username from {filename} file.')
                 os.rename(filename_with_username, filename_without_username)
@@ -107,7 +138,7 @@ class redditUpvoteDownloader:
         """
         # -s subreddit flag given but the current subreddit doest not match
 
-        if self.args.subreddit is not None and item.subreddit != self.args.subreddit:
+        if self.args['subreddit'] is not None and item.subreddit != self.args['subreddit']:
             return
 
         # This is a deleted user account. Don't donwload empty content
@@ -139,12 +170,12 @@ class redditUpvoteDownloader:
             If there was no -l flag given this will always return True.
             If the -l flag was found; check if the download limit has been reached or not.
         """
-        if self.args.limit is None or self.download_counter < self.args.limit:
+        if self.args['limit'] is None or self.download_counter < self.args['limit']:
             return True
         return False
 
     def get_filename(self, item):
-        if self.args.user:
+        if self.args['user']:
             return self.path + str(item.author) + '_' + \
                 re.search('(?s:.*)\\w/(.*)', item.url).group(1)
         return self.path + re.search('(?s:.*)\\w/(.*)', item.url).group(1)
@@ -167,7 +198,7 @@ class redditUpvoteDownloader:
         print(
             f'\nDone: {self.download_counter} new images downloaded to {self.path}')
 
-        if self.args.debug:
+        if self.args['debug']:
             print(
                 f'Amount of upvoted posts scanned: {self.amount_of_upvotes_scanned}')
         return
@@ -189,7 +220,7 @@ def main():
         '-s',
         '--subreddit',
         type=str,
-        help="subreddit",
+        help="Only save post that belong to the given subreddit",
         required=None)
 
     parser.add_argument(
@@ -211,7 +242,16 @@ def main():
         help="Save with post author name in front of file name",
         required=False)
 
-    args = parser.parse_args()
+    parser.add_argument(
+        '-p',
+        '--path',
+        help="Save on the given path",
+        nargs='?',
+        dest='path',
+        const=None,
+        metavar='PATH')
+
+    args = vars(parser.parse_args())
     downloader = redditUpvoteDownloader(args)
     downloader.run()
 
