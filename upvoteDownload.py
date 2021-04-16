@@ -16,21 +16,19 @@ import requests
 # HOME_PATH = f'{Path.home()}/Pictures' # this will make the path ~/Pictures/
 # LIMIT = 500 # limit for the amount of upvoted posts to check
 
-#REPEATED_POSTS = 0
 
 class redditUpvoteDownloader:
-    def __init__(self, sub, limit, user=False, debug=False):
+    def __init__(self, args):
         """ Intializer
 
         :param: string: the subreddit name given as an argument with the -s flag
         """
         config = configparser.ConfigParser()
         config.read('config.ini')
+
+        self.args = args
+
         self.amount_of_upvotes_scanned = 0
-        self.debug = debug
-        self.by_user = user
-        self.sub = sub
-        self.limit = limit
         self.download_counter = 0
         self.repeated_posts = 0
 
@@ -44,10 +42,10 @@ class redditUpvoteDownloader:
         self.upvoted = self.user.upvoted(limit=None)
 
         self.path = None
-        if self.sub is not None:
+        if self.args.subreddit is not None:
             self.path = os.path.join(
                 f'{os.getcwd()}{os.sep}media{os.sep}subreddit{os.sep}',
-                f'{self.sub}{os.sep}')
+                f'{self.args.subreddit}{os.sep}')
         else:
             self.path = os.path.join(
                 f'{os.getcwd()}{os.sep}media{os.sep}user{os.sep}',
@@ -68,7 +66,7 @@ class redditUpvoteDownloader:
 
         # TODO: Refactor me!
         if os.path.isfile(filename_without_username):
-            if self.by_user:
+            if self.args.user:
                 self.repeated_posts = 0
                 print(f'Adding {item.author} (username) to {image_name} file.')
                 os.rename(filename_without_username, filename_with_username)
@@ -78,7 +76,7 @@ class redditUpvoteDownloader:
                 print(f'Already Exists: {filename}')
                 return True
         elif os.path.isfile(filename_with_username):
-            if not self.by_user:
+            if not self.args.user:
                 self.repeated_posts = 0
                 print(f'Removing username from {filename} file.')
                 os.rename(filename_with_username, filename_without_username)
@@ -109,7 +107,7 @@ class redditUpvoteDownloader:
         """
         # -s subreddit flag given but the current subreddit doest not match
 
-        if self.sub is not None and item.subreddit != self.sub:
+        if self.args.subreddit is not None and item.subreddit != self.args.subreddit:
             return
 
         # This is a deleted user account. Don't donwload empty content
@@ -141,12 +139,12 @@ class redditUpvoteDownloader:
             If there was no -l flag given this will always return True.
             If the -l flag was found; check if the download limit has been reached or not.
         """
-        if self.limit is None or self.download_counter < self.limit:
+        if self.args.limit is None or self.download_counter < self.args.limit:
             return True
         return False
 
     def get_filename(self, item):
-        if self.by_user:
+        if self.args.user:
             return self.path + str(item.author) + '_' + \
                 re.search('(?s:.*)\\w/(.*)', item.url).group(1)
         return self.path + re.search('(?s:.*)\\w/(.*)', item.url).group(1)
@@ -169,7 +167,7 @@ class redditUpvoteDownloader:
         print(
             f'\nDone: {self.download_counter} new images downloaded to {self.path}')
 
-        if self.debug:
+        if self.args.debug:
             print(
                 f'Amount of upvoted posts scanned: {self.amount_of_upvotes_scanned}')
         return
@@ -189,15 +187,17 @@ def main():
 
     parser.add_argument(
         '-s',
+        '--subreddit',
         type=str,
         help="subreddit",
-        required=False)
+        required=None)
 
     parser.add_argument(
         '-l',
+        '--limit',
         type=int,
         help="Limit of post to download (default: None)",
-        required=False)
+        required=None)
 
     parser.add_argument(
         '-all',
@@ -212,7 +212,7 @@ def main():
         required=False)
 
     args = parser.parse_args()
-    downloader = redditUpvoteDownloader(args.s, args.l, args.user, args.debug)
+    downloader = redditUpvoteDownloader(args)
     downloader.run()
 
 
