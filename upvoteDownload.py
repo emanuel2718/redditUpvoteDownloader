@@ -185,7 +185,6 @@ class redditUpvoteDownloader:
             if the subreddit matches the given subreddit by the user through the -s argument.
         """
         for item in self.upvoted:
-            # pprint.pprint(vars(item))
             if self.repeated_posts > 20:
                 print('Previously saved posts reached. Too many repeated post seen.')
                 break
@@ -204,10 +203,12 @@ class redditUpvoteDownloader:
         return
 
 
-def main():
+def get_parser():
     parser = argparse.ArgumentParser(
-        description="Reddit Upvote Downloader by Emanuel Ramirez")
-    parser.add_argument_group('Required Arguments')
+        description='download Reddit upvoted media',
+        usage='python3 upvoteDownload.py [-h] [-all] [-user] '
+              '[-l LIMIT] [-s SUBREDDIT] [-p PATH]',
+        formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
         '-debug',
@@ -215,20 +216,6 @@ def main():
         action='store_true',
         help="Debug flag",
         required=False)
-
-    parser.add_argument(
-        '-s',
-        '--subreddit',
-        type=str,
-        help="Only save post that belong to the given subreddit",
-        required=None)
-
-    parser.add_argument(
-        '-l',
-        '--limit',
-        type=int,
-        help="Limit of post to download (default: None)",
-        required=None)
 
     parser.add_argument(
         '-all',
@@ -243,6 +230,20 @@ def main():
         required=False)
 
     parser.add_argument(
+        '-l',
+        '--limit',
+        type=int,
+        help="Limit of post to download (default: None)",
+        required=None)
+
+    parser.add_argument(
+        '-s',
+        '--subreddit',
+        type=str,
+        help="Only save post that belong to the given subreddit",
+        required=None)
+
+    parser.add_argument(
         '-p',
         '--path',
         help="Save on the given path",
@@ -251,6 +252,14 @@ def main():
         const=None,
         metavar='PATH')
 
+    return parser
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Download Reddit upvoted media")
+
+    parser = get_parser()
     args = vars(parser.parse_args())
     downloader = redditUpvoteDownloader(args)
     downloader.run()
