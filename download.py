@@ -45,7 +45,11 @@ class redditUpvoteDownloader:
         self.path = self.set_path()
 
     def set_path(self):
-        if self.args['subreddit']:
+        if self.args['debug']:
+            self.path = os.path.join(
+                f'{os.getcwd()}{os.sep}testDir{os.sep}{self.args["subreddit"]}{os.sep}')
+
+        elif self.args['subreddit']:
             if self.args['path'] is not None and self.is_valid_path():
                 self.path += os.path.join(
                     f'reddit{os.sep}subreddit{os.sep}',
@@ -195,7 +199,7 @@ class redditUpvoteDownloader:
             else:
                 break
         print(
-            f'\nDone: {self.download_counter} new images downloaded to {self.path}')
+            f'\nDONE: {self.download_counter} new images downloaded to {self.path}')
 
         if self.args['debug']:
             print(
@@ -206,7 +210,7 @@ class redditUpvoteDownloader:
 def get_parser():
     parser = argparse.ArgumentParser(
         description='download Reddit upvoted media',
-        usage='python3 upvoteDownload.py [-h] [-all] [-user] '
+        usage='python3 download.py [-h] [-all] [-user] '
               '[-l LIMIT] [-s SUBREDDIT] [-p PATH]',
         formatter_class=argparse.RawTextHelpFormatter)
 
